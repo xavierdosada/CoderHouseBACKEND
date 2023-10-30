@@ -1,0 +1,255 @@
+paths:
+  /api/products/:
+    post:
+      summary: Crear un producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/addProduct'
+      responses:
+        "201":
+          description: El producto se creo y guardo en la base de datos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "400":
+          description: Error en la respuesta del Servidor
+        "500":
+          description: Error interno del Servidor
+  /api/products/{limit}/{page}/{sort}:
+    get:
+      summary: Obtiene todos los products paginados
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: path
+          description: Limite de productos a mostrar
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: path
+          description: Pagina de los productos a mostrar
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: path
+          description: Ordenamiento ascendente(1)/descendente(0) 
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Productos obtenidos correctamente de la base de datos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "400":
+          description: Error en la respuesta del Servidor
+        "500":
+          description: Error interno del Servidor                
+  /api/products/{pid}:        
+    get:
+      summary: Obtiene un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: Id del producto a obtener
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Productos obtenidos correctamente de la base de datos
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/schemas/Products'
+        "404":
+          description: No existe el producto en la base de datos
+        "500":
+          description: Error interno del Servidor
+    put:
+      summary: Actualizar un producto
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProduct' 
+      responses:
+        "200":
+          description: El producto se actualizo y modifico en la base de datos
+        "400":
+          description: Error en la respuesta del Servidor
+        "500":
+          description: Error interno del Servidor               
+    delete:
+      summary: Eliminar un producto
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          description: Id del producto
+          required: true
+      responses:
+        "204":
+          description: El producto se elimino de la base de datos
+        "400":
+          description: Error en la respuesta del Servidor
+        "500":
+          description: Error interno del Servidor      
+
+
+
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongoDB
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        status:
+          type: Boolean
+          description: Estado del producto
+        code:
+          type: String
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Cantidad existente del producto
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: object
+          properties:
+            createdBy:
+              type: String
+              description: Quien fue el creador
+            role:
+              type: String
+              description: Que rol o permisos tiene en el sistema
+      example:
+        _id: ObjectoId("64a5d85df9e139775dda4612")
+        title: Torta
+        description: Helada
+        code: 273234213472341
+        price: 300
+        status: true
+        stock: 1000
+        category: postre
+        owner: { role: premium }
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        status:
+          type: Boolean
+          description: Estado del producto
+        code:
+          type: String
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Cantidad existente del producto
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: object
+          properties:
+            role:
+              type: String
+              required: false
+              description: Que rol o permisos tiene en el sistema
+      example: 
+        title: Torta
+        description: Helada
+        code: 273234213472341
+        price: 300
+        status: true
+        stock: 1000
+        category: postre
+        owner: { role: premium }
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Titulo del producto (opcional).
+          required: false
+        description:
+          type: String
+          description: Descripción del producto (opcional).
+          required: false
+        price:
+          type: Number
+          description: Precio del producto (opcional).
+          required: false
+        status:
+          type: Boolean
+          description: Estado del producto (opcional). 
+          required: false
+        code:
+          type: String
+          description: Codigo del producto (opcional).
+          required: false
+        stock:
+          type: Number
+          description: Cantidad existente del producto (opcional).
+          required: false
+        category:
+          type: String
+          description: Categoria del producto (opcional).
+          required: false
+      example: 
+        title: Torta
+        description: Helada
+        status: true
+        stock: 1000
+        category: postre
