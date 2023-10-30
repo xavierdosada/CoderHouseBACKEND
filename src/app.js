@@ -22,7 +22,7 @@ import swaggerUiExpress from "swagger-ui-express";
 
 const app = express();
 const serverMongo = app.listen(env.PORT, () => {console.log('connected to mongodb on port: ' + env.PORT)})
-mongoose.connect(env.MONGO_URL_TESTING, { 
+mongoose.connect(env.MONGO_URL, { 
         useNewUrlParser: true,
         useUnifiedTopology: true
     }
@@ -54,7 +54,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(session({
     store: new MongoStore({
-        mongoUrl: env.MONGO_URL_TESTING,
+        mongoUrl: env.MONGO_URL,
         ttl: 3600
     }),
     secret: env.SECRET_PASS,
