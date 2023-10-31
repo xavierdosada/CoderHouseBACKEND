@@ -43,7 +43,6 @@ export const logout = async (req, res) => {
             req.logger.error(err)
             res.redirect('/api/session/login')
         } else res.send({ status: 'Logout ERROR', body: err })
-        
     })
 }
 

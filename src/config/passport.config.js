@@ -29,22 +29,25 @@ const initializePassport = () => {
         usernameField: 'email',
         passReqToCallback: true,
     }, async (req, username, password, done) => {
-        const { first_name, last_name, email, dob, role } = req.body
         try {
+            const { first_name, last_name, email, dob, role } = req.body
             let user = await userService.findOne({ email })
             if (user) return done(null, false, { message: 'The email already exists' })
+            
+            //DOB DATE FORMAT
+            const dobDate = new Date(dob)
             const newUser = {
                 first_name,
                 last_name,
                 email,
-                dob,
+                dob: dobDate,
                 password: createHash(password),
                 role
             }
             user = await userService.create(newUser)
-            
             return done(null, user)
         } catch (error) {
+            console.log(error)
             return done({ message: `There was an error creating the user: ${error.message}` })
         }
     }));

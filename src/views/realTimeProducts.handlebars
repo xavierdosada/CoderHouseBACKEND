@@ -1,4 +1,7 @@
-<button class='seeCart' data-id="{{cartId}}">VER MI CARRITO</button>
+<div>
+    <button class='seeCart' data-id="{{cartId}}">VER MI CARRITO</button>
+    <a href="/api/session/logout">Cerrar Sesión</a></p>
+</div>
 <div id="productsContainer">
     {{#each products}}
             <h3>{{this.title}}</h3>
@@ -9,6 +12,5 @@
             <button class='addToCart' data-id="{{this._id}}">Agregar al Carrito</button>
     {{/each}}
 </div>   
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+
 <script src="/js/addToCart.js"></script>

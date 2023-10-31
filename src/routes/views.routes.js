@@ -19,12 +19,12 @@ const router = Router();
 
 router.get('/products', privateAccess, productsView)
 router.get('/products/:pid', productByIdView)
-router.get('/realtimeproducts', passport.authenticate('current', { session: false }), realTimeProducts)
+router.get('/realtimeproducts', passport.authenticate('current', { session: false }), privateAccess, realTimeProducts)
 router.get('/myCart/:cid', myCart)
 router.get('/api/session/register', publicAccess, registerView)
-router.get('/api/session/login', publicAccess, loginView)
-router.get('/api/session/logout', logoutView)
-router.get('/api/admin-dashboard', passport.authenticate('current', { session: false }), isAdmin, adminDashboard)
-router.get('/chat', passport.authenticate('current', { session: false }), isUser, chat)
+router.get('/api/session/login', loginView)
+router.get('/api/session/logout', privateAccess, logoutView)
+router.get('/api/admin-dashboard',  passport.authenticate('current', { session: false }), privateAccess, isAdmin, adminDashboard)
+router.get('/chat', passport.authenticate('current', { session: false }), privateAccess, isUser, chat)
 
 export default router;

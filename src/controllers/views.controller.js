@@ -9,12 +9,12 @@ const cart_repository = cartsRepository;
 
 //MIDDELWARES
 export const publicAccess = (req, res, next) => {
-    if (req.session.user) return res.redirect('/products');
+    if (req.session) return res.redirect('/api/products');
     next();
 }
 
 export const privateAccess = (req, res, next) => {
-    if (!req.session.user) return res.redirect('/api/session/login');
+    if (!req.session) return res.redirect('/api/session/login');
     next();
 }
 
@@ -59,6 +59,7 @@ export const realTimeProducts = async (req, res) => {
 export const myCart = async (req, res) => {
     const { cid } = req.params
     const cartById = await cart_repository.getCartsById(cid);
+    if(!cartById) res.status(400).send({error: 'No se encontro el carrito con ese id'})
     const prods = cartById.products.toObject()
     res.render('cart', { prods })
 }

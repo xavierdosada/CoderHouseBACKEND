@@ -24,7 +24,7 @@ export const pagination = async (req, res) => {
         sort: objSort
     }
 
-    const baseUrl = `${req.protocol}://${req.get('host')}`
+    const baseUrl = `${req.protocol}://${req.get('host')}/api/products`
     
     try {
         const paginate = await productsModel.paginate(req.body, options)
