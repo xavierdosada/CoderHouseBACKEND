@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
     },
     last_name: {
         type: String,
-        required: true
+        // required: true
     },
     email: {
         type: String,
@@ -19,11 +19,11 @@ const schema = new mongoose.Schema({
     },
     dob: {
         type: Date,
-        required: true
+        // required: true
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
     },
     cart: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +32,7 @@ const schema = new mongoose.Schema({
     },
     role: {
         type: String,
-        required: true,
+        // required: true,
         default: 'user'
     },
     documents: [{

@@ -72,15 +72,15 @@ export const loginView = async (req, res) => {
     res.render('login')
 }
 
-export const logoutView = async (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            req.logger.error(err)
-            return res.status(500).send({status: 'error', error: `Couldn't logout: ${err.message}`})
-        } 
-        res.redirect('/api/session/login')
-    })
-}
+// export const logoutView = async (req, res) => {
+//     req.session.destroy(err => {
+//         if (err) {
+//             req.logger.error(err)
+//             return res.status(500).send({status: 'error', error: `Couldn't logout: ${err.message}`})
+//         } 
+//         res.redirect('/api/session/login')
+//     })
+// }
 
 export const chat = async (req, res) => {
     io.on('connection', (socket) => {

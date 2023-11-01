@@ -29,8 +29,9 @@ export const github = async (req, res) => {
 export const githubcallback = async (req, res) => {
     try {
         req.session.user = req.user
-        req.logger.debug(req.session.user)
-        res.redirect('/products')
+        res.cookie('coderCookieToken', req.user, { httpOnly: true })
+        // req.logger.debug(req.session.user)
+        res.redirect('/realtimeproducts')
     } catch (error) {
         req.logger.error(error)
         res.status(400).send({ status: 'error', error: error.message })
@@ -40,9 +41,13 @@ export const githubcallback = async (req, res) => {
 export const logout = async (req, res) => {
     req.session.destroy(err => {
         if (!err){
-            req.logger.error(err)
+            res.clearCookie('coderCookieToken')
             res.redirect('/api/session/login')
-        } else res.send({ status: 'Logout ERROR', body: err })
+            return
+        }
+
+        req.logger.error(err)
+        res.send({ status: 'Logout ERROR', body: err })
     })
 }
 

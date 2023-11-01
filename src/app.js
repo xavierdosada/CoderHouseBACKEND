@@ -58,8 +58,8 @@ app.use(session({
         ttl: 3600
     }),
     secret: env.SECRET_PASS,
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true
 }))
 
 initializePassport();

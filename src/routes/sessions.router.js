@@ -20,7 +20,7 @@ router.get('/github', passport.authenticate('github', { scope: ['user:email'] })
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/api/session/login' }), githubcallback)
 
 //DELETE SESSION
-router.get('/logout', setLastConnection, logout)
+router.get('/logout', passport.authenticate('current', { session: false }), setLastConnection, logout)
 
 //CURRENT
 router.get('/current', passport.authenticate('current', { session: false }), current)

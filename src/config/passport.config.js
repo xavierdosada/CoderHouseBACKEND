@@ -19,6 +19,7 @@ const initializePassport = () => {
         secretOrKey: env.PRIVATE_KEY
     }, async (jwt_payload, done) => {
         try {
+            console.log({jwt_payload})
             return done(null, jwt_payload)
         } catch (error) {
             return done(error)
@@ -61,7 +62,7 @@ const initializePassport = () => {
 
             const { password: pass, _id, __v, ...userNoPass } = user._doc
             const jwt = generateToken(userNoPass)
-
+            console.log('jwt-login: ', jwt)
             return done(null, jwt)
         } catch (error) {
             return done({ error: `Error login user: ${error}` })
@@ -75,6 +76,8 @@ const initializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             let user = await userService.findOne({ email: profile._json.email })
+            if (user) return done(null, user)
+    
             const newUser = {
                 first_name: profile._json.name,
                 last_name: '',
@@ -83,9 +86,12 @@ const initializePassport = () => {
                 password: ''
             }
             user = await userService.create(newUser)
-            return done(null, user)
+            
+            const jwt = generateToken(user)
+            
+            return done(null, jwt)
         } catch (error) {
-            return done({ error: `Error creating user via github: ${error.message}` })
+            return done({ error: `Error creating user via github: ${error}` })
         }
     }));
 
